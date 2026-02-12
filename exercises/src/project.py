@@ -129,6 +129,7 @@ class Book:
 
     GENRES = ["Fiction", "Non-Fiction", "Science", "History", "Technology"]
 
+
     def __init__(self, book_id: str, title: str, author: str, genre: str, available: bool = True):
         # TODO: Initialize attributes
         # TODO: Validate that genre is in GENRES, raise ValueError if not
@@ -305,110 +306,110 @@ class Library:
             json.dump([b.to_dict() for b in self.borrowers.values()], f, indent=4)
 
 
-def add_book(self, title: str, author: str, genre: str) -> Book:
-    """Add a new book to the library."""
-    # TODO: Generate new book_id using generate_id
-    # TODO: Create Book, add to self.books, save, and return
-    existing_ids = list(self.books.keys())
-    book_id = generate_id("BOOK", existing_ids)
-    book = Book(book_id, title, author, genre)
-    self.books[book_id] = book
-    self.save()
-    return book
+    def add_book(self, title: str, author: str, genre: str) -> Book:
+        """Add a new book to the library."""
+        # TODO: Generate new book_id using generate_id
+        # TODO: Create Book, add to self.books, save, and return
+        existing_ids = list(self.books.keys())
+        book_id = generate_id("BOOK", existing_ids)
+        book = Book(book_id, title, author, genre)
+        self.books[book_id] = book
+        self.save()
+        return book
 
 
-def add_borrower(self, name: str, email: str) -> Borrower:
-    """Register a new borrower."""
-    # TODO: Generate new borrower_id, create Borrower, add to self.borrowers, save, return
-    existing_ids = list(self.borrowers.keys())
-    borrower_id = generate_id("USER", existing_ids)
-    borrower = Borrower(borrower_id, name, email)
-    self.borrowers[borrower_id] = borrower
-    self.save()
-    return borrower
+    def add_borrower(self, name: str, email: str) -> Borrower:
+        """Register a new borrower."""
+        # TODO: Generate new borrower_id, create Borrower, add to self.borrowers, save, return
+        existing_ids = list(self.borrowers.keys())
+        borrower_id = generate_id("USER", existing_ids)
+        borrower = Borrower(borrower_id, name, email)
+        self.borrowers[borrower_id] = borrower
+        self.save()
+        return borrower
 
 
-def checkout_book(self, book_id: str, borrower_id: str) -> bool:
-    """
-    Borrower checks out a book.
-    Returns False if book unavailable, borrower not found, or at max limit.
-    """
-    # TODO: Validate book exists and is available
-    # TODO: Validate borrower exists and can borrow
-    # TODO: Update book.available, borrower.borrowed_books
-    # TODO: Save and return True
-    book = self.books.get(book_id)
-    borrower = self.borrowers.get(borrower_id)
-    if not book or not book.available or not borrower or not borrower.can_borrow():
-        return False
-    book.available = False
-    borrower.borrow_book(book_id)
-    self.save()
-    return True
+    def checkout_book(self, book_id: str, borrower_id: str) -> bool:
+        """
+        Borrower checks out a book.
+        Returns False if book unavailable, borrower not found, or at max limit.
+        """
+        # TODO: Validate book exists and is available
+        # TODO: Validate borrower exists and can borrow
+        # TODO: Update book.available, borrower.borrowed_books
+        # TODO: Save and return True
+        book = self.books.get(book_id)
+        borrower = self.borrowers.get(borrower_id)
+        if not book or not book.available or not borrower or not borrower.can_borrow():
+            return False
+        book.available = False
+        borrower.borrow_book(book_id)
+        self.save()
+        return True
 
 
-def return_book(self, book_id: str, borrower_id: str) -> bool:
-    """
-    Borrower returns a book.
-    Returns False if book/borrower not found or book wasn't borrowed by this person.
-    """
-    # TODO: Validate book and borrower exist
-    # TODO: Validate book is in borrower's borrowed_books
-    # TODO: Update book.available, remove from borrowed_books
-    # TODO: Save and return True
-    book = self.books.get(book_id)
-    borrower = self.borrowers.get(borrower_id)
-    if not book or not borrower or book_id not in borrower.borrowed_books:
-        return False
-    book.available = True
-    borrower.return_book(book_id)
-    self.save()
-    return True
+    def return_book(self, book_id: str, borrower_id: str) -> bool:
+        """
+        Borrower returns a book.
+        Returns False if book/borrower not found or book wasn't borrowed by this person.
+        """
+        # TODO: Validate book and borrower exist
+        # TODO: Validate book is in borrower's borrowed_books
+        # TODO: Update book.available, remove from borrowed_books
+        # TODO: Save and return True
+        book = self.books.get(book_id)
+        borrower = self.borrowers.get(borrower_id)
+        if not book or not borrower or book_id not in borrower.borrowed_books:
+            return False
+        book.available = True
+        borrower.return_book(book_id)
+        self.save()
+        return True
 
 
-def search_books(self, **criteria) -> list:
-    """Search books by any criteria (title, author, genre, available)."""
-    # TODO: Use search_items helper function
-    # Hint: Convert self.books.values() to list of dicts first
-    return search_items([b.to_dict() for b in self.books.values()], **criteria)
+    def search_books(self, **criteria) -> list:
+        """Search books by any criteria (title, author, genre, available)."""
+        # TODO: Use search_items helper function
+        # Hint: Convert self.books.values() to list of dicts first
+        return search_items([b.to_dict() for b in self.books.values()], **criteria)
 
 
-def get_available_books(self) -> list:
-    """Get list of all available books."""
-    # TODO: Return books where available=True
-    return [b for b in self.books.values() if b.available]
+    def get_available_books(self) -> list:
+        """Get list of all available books."""
+        # TODO: Return books where available=True
+        return [b for b in self.books.values() if b.available]
 
 
-def get_borrower_books(self, borrower_id: str) -> list:
-    """Get list of books currently borrowed by a borrower."""
-    # TODO: Get borrower, return list of Book objects for their borrowed_books
-    borrower = self.borrowers.get(borrower_id)
-    if not borrower:
-        return []
-    return [self.books[b_id] for b_id in borrower.borrowed_books if b_id in self.books]
+    def get_borrower_books(self, borrower_id: str) -> list:
+        """Get list of books currently borrowed by a borrower."""
+        # TODO: Get borrower, return list of Book objects for their borrowed_books
+        borrower = self.borrowers.get(borrower_id)
+        if not borrower:
+            return []
+        return [self.books[b_id] for b_id in borrower.borrowed_books if b_id in self.books]
 
 
-def get_statistics(self) -> dict:
-    """
-    Return library statistics.
-    Uses the concepts of dict comprehension and aggregation.
-    """
-    # TODO: Return dict with:
-    # - total_books: total number of books
-    # - available_books: number of available books
-    # - checked_out: number of checked out books
-    # - total_borrowers: number of borrowers
-    # - books_by_genre: dict of genre -> count
-    books_by_genre = {genre: 0 for genre in Book.GENRES}
-    for book in self.books.values():
-        books_by_genre[book.genre] += 1
+    def get_statistics(self) -> dict:
+        """
+        Return library statistics.
+        Uses the concepts of dict comprehension and aggregation.
+        """
+        # TODO: Return dict with:
+        # - total_books: total number of books
+        # - available_books: number of available books
+        # - checked_out: number of checked out books
+        # - total_borrowers: number of borrowers
+        # - books_by_genre: dict of genre -> count
+        books_by_genre = {genre: 0 for genre in Book.GENRES}
+        for book in self.books.values():
+            books_by_genre[book.genre] += 1
 
-    total_books = len(self.books)
-    available_books = len([b for b in self.books.values() if b.available])
-    return {
-        "total_books": total_books,
-        "available_books": available_books,
-        "checked_out": total_books - available_books,
-        "total_borrowers": len(self.borrowers),
-        "books_by_genre": books_by_genre
-    }
+        total_books = len(self.books)
+        available_books = len([b for b in self.books.values() if b.available])
+        return {
+            "total_books": total_books,
+            "available_books": available_books,
+            "checked_out": total_books - available_books,
+            "total_borrowers": len(self.borrowers),
+            "books_by_genre": books_by_genre
+        }
