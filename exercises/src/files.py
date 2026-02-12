@@ -249,51 +249,59 @@ class TodoList:
     def __init__(self, filepath: str):
         self.filepath = filepath
         # TODO: Load existing todos from file, or initialize empty list
-        try:
-             with open("course.json", "r", encoding="utf-8") as f:
-                self.todos = json.load(f)
-        except FileNotFoundError:
-                 self.todos = []
-        except json.JSONDecodeError:
-
+        if os.path.exists(self.filepath):
+            try:
+                with open(self.filepath, "r", encoding="utf-8") as f:
+                    self.todos = json.load(f)
+            except json.JSONDecodeError:
                 self.todos = []
+        else:
+            self.todos = []
 
 
-def _save(self) -> None:
-    """Helper method to save todos to file."""
-    # TODO: Save self.todos to self.filepath as JSON
-    with open(self.filepath, "w", encoding="utf-8") as f:
-        json.dump(self.todos, f, indent=2)
+    def _save(self) -> None:
+        with open(self.filepath, "w", encoding="utf-8") as f:
+            json.dump(self.todos, f, indent=2)
 
 
-def _next_id(self) -> int:
-    """Helper method to get the next available ID."""
-    # TODO: Return max id + 1, or 1 if no todos exist
-    pass
+    def _next_id(self) -> int:
+        if not self.todos:
+            return 1
+        return max(todo["id"] for todo in self.todos) + 1
 
 
-def add(self, task: str) -> int:
-    # TODO: Create new todo, add to list, save, return id
-    if not self.todos:
-        return 1
-    return max(todo["id"] for todo in self.todos) + 1
+
+    def add(self, task: str) -> int:
+        # TODO: Create new todo, add to list, save, return id
+        new_id = self._next_id()
+
+        new_todo = {
+            "id": new_id,
+            "task": task,
+            "done": False
+        }
+
+        self.todos.append(new_todo)
+        self._save()
+
+        return new_id
 
 
-def complete(self, todo_id: int) -> bool:
-    # TODO: Find todo by id, set done=True, save, return True
-    # Return False if not found
-    for todo in self.todos:
-        if todo.get("id") == todo_id:
-            todo["done"] = True
-            self._save()
-            return True
-    return False
+    def complete(self, todo_id: int) -> bool:
+        # TODO: Find todo by id, set done=True, save, return True
+        # Return False if not found
+        for todo in self.todos:
+            if todo.get("id") == todo_id:
+                todo["done"] = True
+                self._save()
+                return True
+        return False
 
 
-def get_pending(self) -> list:
-    # TODO: Return todos where done=False
-    return [todo for todo in self.todos if not todo.get("done", False)]
+    def get_pending(self) -> list:
+        # TODO: Return todos where done=False
+        return [todo for todo in self.todos if not todo.get("done", False)]
 
-def get_all(self) -> list:
-    # TODO: Return all todos
-    return self.todos.copy()
+    def get_all(self) -> list:
+        # TODO: Return all todos
+        return self.todos.copy()

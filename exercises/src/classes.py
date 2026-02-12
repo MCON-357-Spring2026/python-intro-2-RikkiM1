@@ -98,12 +98,10 @@ class BankAccount:
         return self.balance
 
     def withdraw(self, amount: float) -> float:
-        # TODO: Subtract amount from balance
-        self.balance -= amount
-        # TODO: Raise ValueError if amount > balance
-
         if amount > self.balance:
-             raise ValueError("Insufficient funds")
+            raise ValueError("Insufficient funds")
+        self.balance -= amount
+        return self.balance
 
     def get_info(self) -> str:
 
@@ -153,11 +151,13 @@ class Temperature:
         # TODO: Convert F to C and create Temperature instance
 
         celsius = (fahrenheit - 32) * 5 / 9
+        return cls(celsius)
 
     @classmethod
     def from_kelvin(cls, kelvin: float) -> "Temperature":
         # TODO: Convert K to C and create Temperature instance
         celsius = kelvin - 273.15
+        return cls(celsius)
 
     def to_fahrenheit(self) -> float:
         # TODO: Return temperature in Fahrenheit
@@ -236,26 +236,24 @@ class Manager(Employee):
     def __init__(self, name: str, employee_id: str, base_salary: float,
                  department: str, bonus: float = 0):
         # TODO: Call parent constructor with super()
-        super().__init__(self, name, employee_id, base_salary)
+        super().__init__( name, employee_id, base_salary)
         # TODO: Initialize department and bonus
         self.department = department
         self.bonus = bonus
 
     def get_annual_salary(self) -> float:
         # TODO: Return base_salary + bonus
-        self.base_salary += self.bonus
-        return self.base_salary
+        return self.base_salary + self.bonus
 
     def get_info(self) -> str:
         # TODO: Return formatted string with Manager info
-        return f"{self.name}, {self.employee_id}, ${self.base_salary:.2f}, Dept: (Managaer, {self.department})"
-
+        return f"ID: {self.employee_id} - {self.name} (Manager, {self.department})"
 
 class Developer(Employee):
     def __init__(self, name: str, employee_id: str, base_salary: float,
                  programming_languages: list = None):
         # TODO: Call parent constructor with super()
-        super().__init__(self, name, employee_id, base_salary)
+        super().__init__( name, employee_id, base_salary)
         # TODO: Initialize programming_languages (use empty list if None)
         if programming_languages is None:
             programming_languages = []
@@ -268,4 +266,4 @@ class Developer(Employee):
 
     def get_info(self) -> str:
         # TODO: Return formatted string with Developer info
-        return f"{self.name}, {self.employee_id}, ${self.base_salary:.2f}, {self.programming_languages})"
+        return f"ID: {self.employee_id} - {self.name} (Developer)"
